@@ -3,21 +3,21 @@
   <view class="card">
     <view class="wrap">
       <text>年龄</text>
-      <input type="text" class="year"></input>
+      <input class="year" name="age" bindinput='ageInput'></input>
       <text>岁</text>
     </view>
   </view>
   <view class="card">
     <view class="wrap">
       <text>身高</text>
-      <input type="text" class="year"></input>
+      <input  class="year" name="height" bindinput='heightInput'></input>
       <text>厘米</text>
     </view>
   </view>
   <view class="card">
     <view class="wrap">
       <text>体重</text>
-      <input type="text" class="year"></input>
+      <input class="year" name="weight" bindinput='weightInput'></input>
       <text>千克</text>
     </view>
 
@@ -35,6 +35,6 @@
     </view>
 
   <view class="">
-    <button class="submit" bindtap='calshow'>提交</button>
+    <button class="submit" bindtap='onAdd'>提交</button>
   </view>
 </view>

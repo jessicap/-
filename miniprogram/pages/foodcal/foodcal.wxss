@@ -1,4 +1,4 @@
-.userinfo {
+/* .userinfo {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -13,10 +13,81 @@
 
 .userinfo-nickname {
   color: #aaa;
+} */
+.foodcal-container{
+    height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10rpx 0 0 0;
+  box-sizing: border-box;
+  padding-bottom:20px;
 }
+.userinfo {
+  position: relative;
+  width: 750rpx;
+  height: 300rpx;
+  color: #000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+ 
+.userinfo-avatar {
+  overflow:hidden;
+  display: block;
+  width: 160rpx;
+  height: 160rpx;
+  margin: 20rpx;
+  margin-top: 50rpx;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+}
+ 
+.userinfo text {
+  font-size: 14px;
+  border-radius:40%;
+  color:#c0c0c0;
+}
+
 .count-Cal{
   text-align: center;
 }
 .count-Cal view{
-  margin:15px 0;
+  margin:5px 0;
+}
+.personalCal{
+  font-size: 20px
+}
+.personalCal-text{
+  font-size:10px;
+  color:#c0c0c0
+}
+.unchoice{
+  background-color: transparent
+}
+.chose{
+  background-color: #ff9999!important
+}
+.classify button{
+  margin:5px 5px;
+  border:1px solid #ff9999;
+  background-color: transparent;
+}
+
+.place button{
+  margin:5px 5px;
+  border:1px solid #66cccc;
+  background-color: transparent;
+  
+}
+.whattoeat-btn{
+  background-color: #faed1f;
+  border-radius: 98rpx;
+ box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+}
+.whattoeat-btn::after{
+  border: 0
 }
