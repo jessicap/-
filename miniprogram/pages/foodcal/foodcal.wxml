@@ -10,30 +10,76 @@
   </view>
   <view class="count-Cal">
     <view class="personalCal">{{cal}}</view>
-    <view  class="personalCal-text">每日摄入热量(cal)</view>
+    <view class="personalCal-text">每日摄入热量(cal)</view>
   </view>
   <view class="choice">
     <view class="classify">
-    
-       
-      <button   wx:for="{{items}}"  wx:key="xxx" size="mini" plain="true" bindtap="choiceClassify" data-classify="{{item.name}}" style="background-color:{{item.bgColor}}" > {{item.value}}</button>
-         
-       
+
+
+      <!-- <button   wx:for="{{items}}"  wx:key="xxx" size="mini" plain="true" bindtap="choiceClassify" data-classify="{{item.name}}" style="background-color:{{item.bgColor}}" > {{item.value}}</button> -->
+
+
       <!-- <button  size="mini" plain="true" bindtap="choiceClassify" data-classify="1" >维持体重</button>
       <button size="mini" plain="true" bindtap="choiceClassify" data-classify="2" >减去脂肪</button>
       <button  size="mini" plain="true" bindtap="choiceClassify" data-classify="3" >增加肌肉</button> -->
     </view>
     <view class="place">
-    <button   wx:for="{{placeitems}}"  wx:key="xxx" size="mini" plain="true" bindtap="choicePlace" data-classify="{{item.name}}" style="background-color:{{item.bgColor}}" > {{item.value}}</button>
+      <button wx:for="{{placeitems}}" wx:key="xxx" size="mini" plain="true" bindtap="choicePlace" data-classify="{{item.name}}" style="background-color:{{item.bgColor}}"> {{item.value}}</button>
       <!-- <button size='mini' plain="true" bindtap="choicePlace"  data-place="1" > 家 / 食堂</button>
       <button size="mini" plain="true" bindtap="choicePlace"  data-place="2"  > 便 利 店</button>
       <button size='mini' plain="true" bindtap="choicePlace"  data-place="3" >附近美食</button> -->
     </view>
   </view>
   <view class="whattoeat">
-  <button class="whattoeat-btn" bindtap="whatsEatToday" >今天吃什么?</button>
-  
+    <button class="whattoeat-btn" bindtap="whatsEatToday">今天吃什么?</button>
   </view>
-<view><image src="{{imgurl}}" mode="aspectFill"></image></view>
+
+  <view class="whatstoeat-content" hidden="{{hiddencontent}}">
+    <view class="breakfast">
+      <view class="text">早餐：</view>
+      <view wx:for="{{breakfast}}" class="foodcontent">
+        <image src="../../images/foods/{{item.foodname}}.jpg" mode="aspectFill" class='img'></image>
+        <view>{{item.foodname}}{{item.foodNum}}</view>
+      </view>
+    </view>
+    <view class="breakfast">
+       <view class="text">午餐：</view>
+      <view wx:for="{{lunch}}" class="foodcontent">
+        <image src="../../images/foods/{{item.foodname}}.jpg" mode="aspectFill" class='img'></image>
+        <view>{{item.foodname}}{{item.foodNum}}</view>
+      </view>
+    </view>
+    <view class="breakfast">
+      <view class="text">晚餐：</view>
+      <view wx:for="{{dinner}}" class="foodcontent">
+        <image src="../../images/foods/{{item.foodname}}.jpg" mode="aspectFill" class='img'></image>
+        <view>{{item.foodname}}{{item.foodNum}}</view>
+      </view>
+    </view>
+    <view class="breakfast">
+       <view class="text">加餐：</view>
+      <view wx:for="{{addmeal}}" class="foodcontent">
+        <image src="../../images/foods/{{item.foodname}}.jpg" mode="aspectFill" class='img'></image>
+        <view>{{item.foodname}}{{item.foodNum}}</view>
+      </view>
+    </view>
+    <view class="totalcal">
+      <text>卡路里总计：</text>
+      <text>{{breakfastCal+lunchCal+dinnerCal+addmealCal}}(cal)</text>
+      <view class="saysomething">
+        <view wx:if="{{ breakfastCal+lunchCal+dinnerCal+addmealCal-cal>200}}">吃多了，{{sports[0].name}}</view>
+        <view wx:elif="{{ breakfastCal+lunchCal+dinnerCal+addmealCal-cal>150}}">吃多了，{{sports[1].name}}</view>
+        <view wx:elif="{{ breakfastCal+lunchCal+dinnerCal+addmealCal-cal>100}}">吃多了，{{sports[2].name}}</view>
+        <view wx:elif="{{ breakfastCal+lunchCal+dinnerCal+addmealCal-cal>0}}">吃多了，{{sports[3].name}}</view>
+        <view wx:elif="{{ breakfastCal+lunchCal+dinnerCal+addmealCal-cal<-100}}">今天可以多吃一点</view>
+        <view wx:else>今天吃的差不多了</view>
+      </view>
+
+    </view>
+
+
+
+  </view>
+
 
 </view>

@@ -27,7 +27,7 @@
 .userinfo {
   position: relative;
   width: 750rpx;
-  height: 300rpx;
+  height: 280rpx;
   color: #000;
   display: flex;
   flex-direction: column;
@@ -39,8 +39,8 @@
   display: block;
   width: 160rpx;
   height: 160rpx;
-  margin: 20rpx;
-  margin-top: 50rpx;
+  margin: 10rpx;
+  margin-top: 30rpx;
   border-radius: 50%;
   border: 2px solid #fff;
   box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
@@ -56,7 +56,7 @@
   text-align: center;
 }
 .count-Cal view{
-  margin:5px 0;
+  margin:2px 0;
 }
 .personalCal{
   font-size: 20px
@@ -78,7 +78,7 @@
 }
 
 .place button{
-  margin:5px 5px;
+  margin:10px 5px;
   border:1px solid #66cccc;
   background-color: transparent;
   
@@ -87,7 +87,36 @@
   background-color: #faed1f;
   border-radius: 98rpx;
  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+ margin:2px;
+
 }
 .whattoeat-btn::after{
   border: 0
+}
+.img{
+  width: 30px;
+  height:30px;
+}
+.breakfast{
+  display: flex;
+  flex-direction: row;
+  font-size: 10px;
+  margin:5px 0;
+ 
+}
+.breakfast .text{
+  text-align:center;
+height:60px;
+line-height:60px;
+}
+.foodcontent{
+  margin:6px;
+}
+.totalcal{
+  font-size: 14px;
+  text-align: center;
+  margin:5px 0
+}
+.saysomething{
+  margin:5px;
 }

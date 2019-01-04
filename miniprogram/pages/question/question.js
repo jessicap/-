@@ -129,9 +129,9 @@ Page({
   //计算卡路里
   calculate: function() {
     if (this.data.userInfo.gender === 2) {
-      // calculate = (655 + (9.6 * this.data.weight) + (1.8 * this.data.height) - (4.7 * this.data.age)) *    this.data.activity
+      // calculate = (638 + (9.6 * this.data.weight) + (1.8 * this.data.height) - (4.7 * this.data.age)) *    this.data.activity
       this.setData({
-        calculate: parseInt((655 + (9.6 * this.data.weight) + (1.8 * this.data.height) - (4.7 * this.data.age)) * this.data.activity)
+        calculate: parseInt((638 + (9.6 * this.data.weight) + (1.8 * this.data.height) - (4.7 * this.data.age)) * this.data.activity)
       })
     } else if (this.data.userInfo.gender === 1) {
       // calculate = (66 + (13.7 * this.data.weight) + (5 * this.data.height) - (6.8 * this.data.age)) *    this.data.activity
