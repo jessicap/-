@@ -1,9 +1,18 @@
+
+// 引用百度地图微信小程序JSAPI模块 
+var bmap = require('../../libs/bmap-wx.js');
+var wxMarkerData = [];
 Page({
   data: {
+    markers: [],
+    latitude: '',
+    longitude: '',
+    placeData: {},
     avatarUrl: './user-unlogin.png',
     userInfo: {},
     cal: '',
     hiddencontent:true,
+    hiddenmap: true,
     items: [{
         name: '0',
         value: '维持体重',
@@ -77,6 +86,12 @@ Page({
     addmealCal:'',
     totalCal:''
   },
+  makertap: function (e) {
+    var that = this;
+    var id = e.markerId;
+    that.showSearchInfo(wxMarkerData, id);
+    that.changeMarkerColor(wxMarkerData, id);
+  },
   onLoad: function() {
     this.onQuery()
     if (!wx.cloud) {
@@ -100,13 +115,87 @@ Page({
             }
           })
         }
+       
       }
     })
 
-    // this.setData({
-    //   cal: wx.getStorageSync('cal')
+    
+  },
+  showSearchInfo: function (data, i) {
+    var that = this;
+    console.log(data[i]);
+    that.setData({
+      placeData: {
+        title: '名称：' + data[i].title + '\n',
+        address: '地址：' + data[i].address + '\n',
+        telephone: '电话：' + data[i].telephone
+      }
+    });
+  },
+  changeMarkerColor: function (data, i) {
+    var that = this;
+    var markers = [];
+    for (var j = 0; j < data.length; j++) {
+      if (j == i) {
+        // 此处需要在相应路径放置图片文件 
+        data[j].iconPath = "../../img/marker_yellow.png";
+      } else {
+        // 此处需要在相应路径放置图片文件 
+        data[j].iconPath = "../../img/marker_red.png";
+      }
+      markers[j] = data[j];
+    }
+    that.setData({
+      markers: markers
+    });
+  },
+  //获取经纬度
+  getLocation: function (e) {
+
+    var that = this;
+    // 新建百度地图对象 
+    var BMap = new bmap.BMapWX({
+      ak: 'tFZzwkWBKBgLsgsxvK5GQ95F'
+    });
+    var fail = function (data) {
+      console.log(data)
+    };
+    var success = function (data) {
+      wxMarkerData = data.wxMarkerData;
+      console.log(wxMarkerData);
+      that.setData({
+        markers: wxMarkerData
+      });
+      that.setData({
+        latitude: wxMarkerData[0].latitude
+      });
+      that.setData({
+        longitude: wxMarkerData[0].longitude
+      });
+    }
+    // 发起POI检索请求 
+    BMap.search({
+      "query": '美食',
+      fail: fail,
+      success: success,
+      // 此处需要在相应路径放置图片文件 
+      iconPath: '../../img/marker_red.png',
+      // 此处需要在相应路径放置图片文件 
+      iconTapPath: '../../img/marker_red.png'
+    });
+    // wx.getLocation({
+    //   type: 'wgs84',
+    //   success: function (res) {
+    //     // console.log(res);
+    //     var latitude = res.latitude
+    //     var longitude = res.longitude
+    //     //弹框
+    //     // wx.showModal({
+    //     //   title: '当前位置',
+    //     //   content: "纬度:" + latitude + ",经度:" + longitude,
+    //     // })
+    //   }
     // })
-    // console.log("用户卡路里："+this.data.cal)
   },
   choiceClassify: function(e) {
     var that = this
@@ -242,13 +331,14 @@ Page({
     //   fail: console.error
     // })
 
+    //如果选择家/食堂
     if ( chosePlace === '0') {
      
       this.onQueryTodayBreakfast();
       this.onQueryTodayLunch();
       this.onQueryTodayDinner();
       this.onQueryTodayAddmeal();
-      this.caltotal(this.data.breakfastCal);
+     // this.caltotal(this.data.breakfastCal);
       console.log("点击按钮"+this.data.breakfastCal);
       // if (this.data.breakfastCal != '' && this.data.lunchCal != '' && this.data.dinnerCal != '' && this.data.addmealCal!=''){
         this.setData({
@@ -256,11 +346,29 @@ Page({
         })
       // }
      
+    } 
+    //如果选择便利店
+    else if (chosePlace === '1'){
+      this.onQueryTodayBreakfastStore();
+      this.onQueryTodayLunchStore();
+      this.onQueryTodayDinnerStore();
+      this.onQueryTodayAddmealStore();
+      this.setData({
+        hiddencontent: false
+      })
+    }
+    //如果选择附近美食
+    else if (chosePlace === '2'){
+     this.getLocation();
+      this.setData({
+        hiddenmap: false
+      })
+      console.log(this.data.hiddenmap)
     }
 
 
   },
-  //查询这个人今日早餐
+  //查询这个人今日早餐--在家
   onQueryTodayBreakfast: function() {
     var max, max1
     var random1, random2, random3
@@ -327,7 +435,75 @@ Page({
     })
 
   },
-  //查询这个人今日午餐
+  //查询这个人今日早餐--便利店
+  onQueryTodayBreakfastStore: function () {
+    var max, max1
+    var random1, random2, random3
+    var arr = new Array();
+    var randomarr = new Array();
+    var breakfastCal
+
+    const db = wx.cloud.database()
+    const _ = db.command
+    // 查询当前用户所有的 users
+    db.collection('store').where(_.or([{
+      foodType: '早eat'
+    },
+    {
+      foodType: '早drink'
+    }
+    ])).get({
+      success: res => {
+        // this.setData({
+        //   cal: res.data[0].calculaste
+        // })
+        max = res.data.length;
+        console.log(max);
+        console.log(this.createRandom(this.randomArr(max), 3))
+        randomarr = this.createRandom(this.randomArr(max), 3)
+        random1 = randomarr[0];
+        random2 = randomarr[1];
+        random3 = randomarr[2];
+
+
+        var obj1 = new Object();
+        var obj2 = new Object();
+        var obj3 = new Object();
+        obj1.foodname = res.data[random1].foodName
+        obj1.foodNum = res.data[random1].foodNum
+        obj1.foodCal = res.data[random1].foodCal
+        obj2.foodname = res.data[random2].foodName
+        obj2.foodNum = res.data[random2].foodNum
+        obj2.foodCal = res.data[random2].foodCal
+        obj3.foodname = res.data[random3].foodName
+        obj3.foodNum = res.data[random3].foodNum
+        obj3.foodCal = res.data[random3].foodCal
+        arr.push(obj1)
+        arr.push(obj2)
+
+        arr.push(obj3)
+        breakfastCal = obj1.foodCal + obj2.foodCal + obj3.foodCal
+
+        //  return arr
+
+        this.setData({
+          breakfast: arr,
+          breakfastCal: breakfastCal
+        })
+        console.log(arr);
+        console.log('[数据库] [查询记录] 成功: ', res)
+      },
+      fail: err => {
+        wx.showToast({
+          icon: 'none',
+          title: '查询记录失败'
+        })
+        console.error('[数据库] [查询记录] 失败：', err)
+      }
+    })
+
+  },
+  //查询这个人今日午餐--在家
   onQueryTodayLunch: function() {
     var max, max1
     var random1, random2, random3
@@ -388,7 +564,58 @@ Page({
     })
 
   },
-  //查询这个人今日晚餐
+  //查询这个人今日午餐--便利店
+  onQueryTodayLunchStore: function () {
+    var max, max1
+    var random1, random2, random3
+    var arr = new Array();
+    var randomarr = new Array();
+    var lunchCal
+    const db = wx.cloud.database()
+    const _ = db.command
+    // 查询当前用户所有的 users
+    db.collection('store').where({
+      foodType: '中晚eat'
+    }).get({
+      success: res => {
+        // this.setData({
+        //   cal: res.data[0].calculaste
+        // })
+        max = res.data.length;
+        console.log(this.createRandom(this.randomArr(max), 1))
+        randomarr = this.createRandom(this.randomArr(max), 1)
+        random1 = randomarr[0];
+       
+
+
+        var obj1 = new Object();
+      
+        obj1.foodname = res.data[random1].foodName
+        obj1.foodNum = res.data[random1].foodNum
+        obj1.foodCal = res.data[random1].foodCal
+     
+        arr.push(obj1)
+   
+        lunchCal = obj1.foodCal
+
+        this.setData({
+          lunch: arr,
+          lunchCal: lunchCal
+        })
+        console.log(arr);
+        console.log('[数据库] [查询记录] 成功: ', res)
+      },
+      fail: err => {
+        wx.showToast({
+          icon: 'none',
+          title: '查询记录失败'
+        })
+        console.error('[数据库] [查询记录] 失败：', err)
+      }
+    })
+
+  },
+  //查询这个人今日晚餐--在家
   onQueryTodayDinner: function() {
     var max, max1
     var random1, random2, random3
@@ -449,7 +676,58 @@ Page({
     })
 
   },
-  //查询这个人今日加餐
+  //查询这个人今日晚餐--便利店
+  onQueryTodayDinnerStore: function () {
+    var max, max1
+    var random1, random2, random3
+    var arr = new Array();
+    var randomarr = new Array();
+    var dinnerCal
+    const db = wx.cloud.database()
+    const _ = db.command
+    // 查询当前用户所有的 users
+    db.collection('store').where({
+      foodType: '中晚eat'
+    }).get({
+      success: res => {
+        // this.setData({
+        //   cal: res.data[0].calculaste
+        // })
+        max = res.data.length;
+        console.log(this.createRandom(this.randomArr(max), 1))
+        randomarr = this.createRandom(this.randomArr(max), 1)
+        random1 = randomarr[0];
+    
+
+        var obj1 = new Object();
+      
+        obj1.foodname = res.data[random1].foodName
+        obj1.foodNum = res.data[random1].foodNum
+        obj1.foodCal = res.data[random1].foodCal
+       
+        arr.push(obj1)
+      
+        dinnerCal = obj1.foodCal
+        //  return arr
+
+        this.setData({
+          dinner: arr,
+          dinnerCal: dinnerCal
+        })
+        console.log(arr);
+        console.log('[数据库] [查询记录] 成功: ', res)
+      },
+      fail: err => {
+        wx.showToast({
+          icon: 'none',
+          title: '查询记录失败'
+        })
+        console.error('[数据库] [查询记录] 失败：', err)
+      }
+    })
+
+  },
+  //查询这个人今日加餐--在家
   onQueryTodayAddmeal: function () {
     var max, max1
     var random1, random2, random3
@@ -487,6 +765,61 @@ Page({
         arr.push(obj1)
         arr.push(obj2)
         addmealCal = obj1.foodCal+obj2.foodCal
+        //  return arr
+
+        this.setData({
+          addmeal: arr,
+          addmealCal: addmealCal
+        })
+        console.log(arr);
+        console.log('[数据库] [查询记录] 成功: ', res)
+      },
+      fail: err => {
+        wx.showToast({
+          icon: 'none',
+          title: '查询记录失败'
+        })
+        console.error('[数据库] [查询记录] 失败：', err)
+      }
+    })
+
+  },
+  //查询这个人今日加餐--便利店
+  onQueryTodayAddmealStore: function () {
+    var max, max1
+    var random1, random2, random3
+    var arr = new Array();
+    var randomarr = new Array();
+    var addmealCal
+    const db = wx.cloud.database()
+    const _ = db.command
+    // 查询当前用户所有的 users
+    db.collection('store').where({
+      foodType: '加餐'
+    }).get({
+      success: res => {
+        // this.setData({
+        //   cal: res.data[0].calculaste
+        // })
+        max = res.data.length;
+        console.log(this.createRandom(this.randomArr(max), 2))
+        randomarr = this.createRandom(this.randomArr(max), 2)
+        random1 = randomarr[0];
+      
+
+
+
+        var obj1 = new Object();
+      
+
+        obj1.foodname = res.data[random1].foodName
+        obj1.foodNum = res.data[random1].foodNum
+        obj1.foodCal = res.data[random1].foodCal
+       
+
+        arr.push(obj1)
+       
+        addmealCal = obj1.foodCal 
         //  return arr
 
         this.setData({

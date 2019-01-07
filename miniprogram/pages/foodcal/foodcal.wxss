@@ -93,9 +93,12 @@
 .whattoeat-btn::after{
   border: 0
 }
-.img{
+.foodcontent .img{
   width: 30px;
   height:30px;
+}
+.foodcontent .title{
+  width:60px;
 }
 .breakfast{
   display: flex;
@@ -119,4 +122,23 @@ line-height:60px;
 }
 .saysomething{
   margin:5px;
+}
+.mapview{
+   height: 100%; 
+    width: 100%; 
+}
+.map_container{ 
+    height: 300px; 
+    width: 90%; 
+    margin:10px auto;
+} 
+
+.map { 
+    height: 100%; 
+    width: 100%; 
+} 
+.mapview .place_info{
+  font-size:14px;
+  width: 90%; 
+  margin:10px auto;
 }
