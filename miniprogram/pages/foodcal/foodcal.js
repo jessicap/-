@@ -342,7 +342,8 @@ Page({
       console.log("点击按钮"+this.data.breakfastCal);
       // if (this.data.breakfastCal != '' && this.data.lunchCal != '' && this.data.dinnerCal != '' && this.data.addmealCal!=''){
         this.setData({
-          hiddencontent: false
+          hiddencontent: false,
+          hiddenmap: true
         })
       // }
      
@@ -354,14 +355,16 @@ Page({
       this.onQueryTodayDinnerStore();
       this.onQueryTodayAddmealStore();
       this.setData({
-        hiddencontent: false
+        hiddencontent: false,
+        hiddenmap: true
       })
     }
     //如果选择附近美食
     else if (chosePlace === '2'){
      this.getLocation();
       this.setData({
-        hiddenmap: false
+        hiddenmap: false,
+        hiddencontent:true
       })
       console.log(this.data.hiddenmap)
     }
