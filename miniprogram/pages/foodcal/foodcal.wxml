@@ -9,7 +9,8 @@
     </block>
   </view>
   <view class="count-Cal">
-    <view class="personalCal">{{cal}}</view>
+    <view class="personalCal" wx:if="{{cal!=''}}">{{cal}}</view>
+    <view class="personalCal" wx:else><button bindtap='questionshow'>填写问卷</button></view>
     <view class="personalCal-text">每日摄入热量(cal)</view>
   </view>
   <view class="choice">
@@ -38,28 +39,28 @@
     <view class="breakfast">
       <view class="text">早餐：</view>
       <view wx:for="{{breakfast}}" class="foodcontent">
-        <image src="../../images/foods/{{item.foodname}}.jpg" mode="aspectFill" class='img'></image>
+        <image src="../../images/foods/{{item.foodid}}.jpg" mode="aspectFill" class='img'></image>
         <view class="title">{{item.foodname}}{{item.foodNum}}</view>
       </view>
     </view>
     <view class="breakfast">
        <view class="text">午餐：</view>
       <view wx:for="{{lunch}}" class="foodcontent">
-        <image src="../../images/foods/{{item.foodname}}.jpg" mode="aspectFill" class='img'></image>
+        <image src="../../images/foods/{{item.foodid}}.jpg" mode="aspectFill" class='img'></image>
         <view class="title">{{item.foodname}}{{item.foodNum}}</view>
       </view>
     </view>
     <view class="breakfast">
       <view class="text">晚餐：</view>
       <view wx:for="{{dinner}}" class="foodcontent">
-        <image src="../../images/foods/{{item.foodname}}.jpg" mode="aspectFill" class='img'></image>
+        <image src="../../images/foods/{{item.foodid}}.jpg" mode="aspectFill" class='img'></image>
         <view class="title">{{item.foodname}}{{item.foodNum}}</view>
       </view>
     </view>
     <view class="breakfast">
        <view class="text">加餐：</view>
       <view wx:for="{{addmeal}}" class="foodcontent">
-        <image src="../../images/foods/{{item.foodname}}.jpg" mode="aspectFill" class='img'></image>
+        <image src="../../images/foods/{{item.foodid}}.jpg" mode="aspectFill" class='img'></image>
         <view class="title">{{item.foodname}}{{item.foodNum}}</view>
       </view>
     </view>
@@ -67,21 +68,22 @@
       <text>卡路里总计：</text>
       <text>{{breakfastCal+lunchCal+dinnerCal+addmealCal}}(cal)</text>
       <view class="saysomething">
-        <view wx:if="{{ breakfastCal+lunchCal+dinnerCal+addmealCal-cal>200}}">吃多了，{{sports[0].name}}</view>
-        <view wx:elif="{{ breakfastCal+lunchCal+dinnerCal+addmealCal-cal>150}}">吃多了，{{sports[1].name}}</view>
-        <view wx:elif="{{ breakfastCal+lunchCal+dinnerCal+addmealCal-cal>100}}">吃多了，{{sports[2].name}}</view>
-        <view wx:elif="{{ breakfastCal+lunchCal+dinnerCal+addmealCal-cal>0}}">吃多了，{{sports[3].name}}</view>
-        <view wx:elif="{{ breakfastCal+lunchCal+dinnerCal+addmealCal-cal<-100}}">今天可以多吃一点</view>
+        <view wx:if="{{cal!=''&& breakfastCal+lunchCal+dinnerCal+addmealCal-cal>200}}">吃多了，{{sports[0].name}}</view>
+        <view wx:elif="{{cal!=''&& breakfastCal+lunchCal+dinnerCal+addmealCal-cal>150}}">吃多了，{{sports[1].name}}</view>
+        <view wx:elif="{{cal!=''&& breakfastCal+lunchCal+dinnerCal+addmealCal-cal>100}}">吃多了，{{sports[2].name}}</view>
+        <view wx:elif="{{cal!=''&& breakfastCal+lunchCal+dinnerCal+addmealCal-cal>0}}">吃多了，{{sports[3].name}}</view>
+        <view wx:elif="{{ cal!=''&&breakfastCal+lunchCal+dinnerCal+addmealCal-cal<-100}}">今天可以多吃一点</view>
+        <view wx:elif="{{cal===''}}">请填写问卷获得运动小贴士！</view>
         <view wx:else>今天吃的差不多了</view>
       </view>
 
     </view>
-
+    <view class="givemoney" bindtap='givemoney'><button class="givemoney-btn">给开发者赞赏</button></view>
 
 
   </view>
 
-<view class="mapview"  hidden="{{hiddenmap}}">
+<!-- <view class="mapview"  hidden="{{hiddenmap}}">
 <view class="map_container"> 
   <map class="map" id="map" longitude="{{longitude}}" latitude="{{latitude}}" scale="14" show-location="true" markers="{{markers}}" bindmarkertap="makertap"></map> 
 </view> 
@@ -90,5 +92,7 @@
   <text>{{placeData.address}}</text> 
   <text>{{placeData.telephone}}</text> 
 </view>
-</view>
+<view class="dianping"></view>
+<view class="givemoney" bindtap='givemoney'><button class="givemoney-btn" style="width:40%;">给开发者赞赏</button></view>
+</view> -->
 </view>

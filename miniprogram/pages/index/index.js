@@ -17,7 +17,9 @@ Page({
       })
       return
     }
-
+    wx.showShareMenu({
+      withShareTicket: true
+    })
     // 获取用户信息
     wx.getSetting({
       success: res => {

@@ -142,3 +142,19 @@ line-height:60px;
   width: 90%; 
   margin:10px auto;
 }
+.givemoney{
+  text-align: center;
+
+}
+.givemoney-btn{
+ 
+  background-color: #ff9999;
+  border-radius: 98rpx;
+ box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+ margin:10px auto;
+
+
+}
+.givemoney-btn::after{
+  border: 0
+}

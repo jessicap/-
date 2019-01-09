@@ -93,6 +93,7 @@ Page({
     that.changeMarkerColor(wxMarkerData, id);
   },
   onLoad: function() {
+   
     this.onQuery()
     if (!wx.cloud) {
       wx.redirectTo({
@@ -100,11 +101,15 @@ Page({
       })
       return
     }
-
+    wx.showShareMenu({
+      withShareTicket: true
+    })
+   
     // 获取用户信息
     wx.getSetting({
       success: res => {
         if (res.authSetting['scope.userInfo']) {
+          console.log(res.authSetting['scope.userInfo'])
           // 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框
           wx.getUserInfo({
             success: res => {
@@ -114,12 +119,43 @@ Page({
               })
             }
           })
+        } else{
+          wx.navigateTo({
+            url: '../index/index',
+          })
         }
+       
        
       }
     })
 
     
+  },
+  givemoney:function(){
+    wx.navigateToMiniProgram({
+      appId: 'wx18a2ac992306a5a4',
+      path: 'pages/apps/largess/detail?id=5gSRro5yY08%3D',
+      extraData: {
+        foo: 'bar'
+      },
+      envVersion: 'release',
+      success(res) {
+        console.log("跳转给赞小程序");
+      }
+    })
+  },
+  gotodianping: function () {
+    wx.navigateToMiniProgram({
+      appId: 'wx623b509bd76c3e71',
+      path: '',
+      extraData: {
+        foo: 'bar'
+      },
+      envVersion: 'release',
+      success(res) {
+        console.log("跳转大众小程序");
+      }
+    })
   },
   showSearchInfo: function (data, i) {
     var that = this;
@@ -361,12 +397,13 @@ Page({
     }
     //如果选择附近美食
     else if (chosePlace === '2'){
-     this.getLocation();
-      this.setData({
-        hiddenmap: false,
-        hiddencontent:true
-      })
-      console.log(this.data.hiddenmap)
+    //  this.getLocation();
+    //   this.setData({
+    //     hiddenmap: false,
+    //     hiddencontent:true
+    //   })
+    //   console.log(this.data.hiddenmap)
+    this.gotodianping();
     }
 
 
@@ -404,12 +441,15 @@ Page({
         var obj1 = new Object();
         var obj2 = new Object();
         var obj3 = new Object();
+        obj1.foodid = res.data[random1].foodId
         obj1.foodname = res.data[random1].foodName
         obj1.foodNum = res.data[random1].foodNum
         obj1.foodCal = res.data[random1].foodCal
+        obj2.foodid = res.data[random2].foodId
         obj2.foodname = res.data[random2].foodName
         obj2.foodNum = res.data[random2].foodNum
         obj2.foodCal = res.data[random2].foodCal
+        obj3.foodid = res.data[random3].foodId
         obj3.foodname = res.data[random3].foodName
         obj3.foodNum = res.data[random3].foodNum
         obj3.foodCal = res.data[random3].foodCal
@@ -472,12 +512,15 @@ Page({
         var obj1 = new Object();
         var obj2 = new Object();
         var obj3 = new Object();
+        obj1.foodid = res.data[random1].foodId
         obj1.foodname = res.data[random1].foodName
         obj1.foodNum = res.data[random1].foodNum
         obj1.foodCal = res.data[random1].foodCal
+        obj2.foodid = res.data[random2].foodId
         obj2.foodname = res.data[random2].foodName
         obj2.foodNum = res.data[random2].foodNum
         obj2.foodCal = res.data[random2].foodCal
+        obj3.foodid = res.data[random3].foodId
         obj3.foodname = res.data[random3].foodName
         obj3.foodNum = res.data[random3].foodNum
         obj3.foodCal = res.data[random3].foodCal
@@ -534,12 +577,15 @@ Page({
         var obj1 = new Object();
         var obj2 = new Object();
         var obj3 = new Object();
+        obj1.foodid = res.data[random1].foodId
         obj1.foodname = res.data[random1].foodName
         obj1.foodNum = res.data[random1].foodNum
         obj1.foodCal = res.data[random1].foodCal
+        obj2.foodid = res.data[random2].foodId
         obj2.foodname = res.data[random2].foodName
         obj2.foodNum = res.data[random2].foodNum
         obj2.foodCal = res.data[random2].foodCal
+        obj3.foodid = res.data[random3].foodId
         obj3.foodname = res.data[random3].foodName
         obj3.foodNum = res.data[random3].foodNum
         obj3.foodCal = res.data[random3].foodCal
@@ -592,7 +638,7 @@ Page({
 
 
         var obj1 = new Object();
-      
+        obj1.foodid = res.data[random1].foodId
         obj1.foodname = res.data[random1].foodName
         obj1.foodNum = res.data[random1].foodNum
         obj1.foodCal = res.data[random1].foodCal
@@ -646,12 +692,15 @@ Page({
         var obj1 = new Object();
         var obj2 = new Object();
         var obj3 = new Object();
+        obj1.foodid = res.data[random1].foodId
         obj1.foodname = res.data[random1].foodName
         obj1.foodNum = res.data[random1].foodNum
         obj1.foodCal = res.data[random1].foodCal
+        obj2.foodid = res.data[random2].foodId
         obj2.foodname = res.data[random2].foodName
         obj2.foodNum = res.data[random2].foodNum
         obj2.foodCal = res.data[random2].foodCal
+        obj3.foodid = res.data[random3].foodId
         obj3.foodname = res.data[random3].foodName
         obj3.foodNum = res.data[random3].foodNum
         obj3.foodCal = res.data[random3].foodCal
@@ -703,7 +752,7 @@ Page({
     
 
         var obj1 = new Object();
-      
+        obj1.foodid = res.data[random1].foodId
         obj1.foodname = res.data[random1].foodName
         obj1.foodNum = res.data[random1].foodNum
         obj1.foodCal = res.data[random1].foodCal
@@ -757,10 +806,11 @@ Page({
 
         var obj1 = new Object();
         var obj2 = new Object();
-     
+        obj1.foodid = res.data[random1].foodId
         obj1.foodname = res.data[random1].foodName
         obj1.foodNum = res.data[random1].foodNum
         obj1.foodCal = res.data[random1].foodCal
+        obj2.foodid = res.data[random2].foodId
         obj2.foodname = res.data[random2].foodName
         obj2.foodNum = res.data[random2].foodNum
         obj2.foodCal = res.data[random2].foodCal
@@ -784,6 +834,13 @@ Page({
         })
         console.error('[数据库] [查询记录] 失败：', err)
       }
+    })
+
+  },
+  //跳转问卷页面
+  questionshow: function (res) {
+    wx.navigateTo({
+      url: '/pages/question/question',
     })
 
   },
@@ -814,7 +871,7 @@ Page({
 
         var obj1 = new Object();
       
-
+        obj1.foodid = res.data[random1].foodId
         obj1.foodname = res.data[random1].foodName
         obj1.foodNum = res.data[random1].foodNum
         obj1.foodCal = res.data[random1].foodCal
