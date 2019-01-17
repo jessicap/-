@@ -42,8 +42,17 @@ box-sizing:border-box;
     padding: 5px;
 }
 .submit{
-  width:180px;
+  width:120px;
   margin:20px auto;
   font-size:15px;
   background-color: rgb(247, 212, 59);
+}
+.btn{
+  display: flex
+}
+.butian-submit{
+  width:120px;
+  margin:20px auto;
+  font-size:15px;
+  background-color:#eee;
 }

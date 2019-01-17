@@ -126,6 +126,11 @@ Page({
     }
     
   },
+  onFood:function(){
+    wx.navigateTo({
+      url: '../foodcal/foodcal',
+    })
+  },
   //计算卡路里
   calculate: function() {
     if (this.data.userInfo.gender === 2) {
