@@ -1,3 +1,5 @@
+const app = getApp()
+
 Page({
   data: {
     items: [{
@@ -32,15 +34,28 @@ Page({
     province: '',
     avatarUrl: './user-unlogin.png',
     userInfo: {},
-    calculate: ''
+    calculate: '',
+    openid:'',
+    queryResult:''
   },
   onLoad: function() {
+    this.onGetOpenid();
+  
     if (!wx.cloud) {
       wx.redirectTo({
         url: '../chooseLib/chooseLib',
       })
       return
     }
+    // // 在页面onLoad回调事件中创建插屏广告实例
+    // if (wx.createInterstitialAd) {
+    //   interstitialAd = wx.createInterstitialAd({
+    //     adUnitId: 'adunit-81914257bdb6997f'
+    //   })
+    //   interstitialAd.onLoad(() => { })
+    //   interstitialAd.onError((err) => { })
+    //   interstitialAd.onClose(() => { })
+    // }
 
     // 获取用户信息
     wx.getSetting({
@@ -58,6 +73,31 @@ Page({
         }
       }
     })
+   
+  },
+  onGetOpenid: function () {
+    // 调用云函数
+    
+ wx.cloud.callFunction({
+      name: 'login',
+      success: res => {
+        console.log('[云函数] [login] user openid: ', res.result.openid)
+       app.globalData.openid = res.result.openid
+        this.setData({
+          openid:app.globalData.openid
+        })
+     //   return app.globalData.openid
+        console.log(app.globalData.openid)
+        this.onQuery();
+      },
+      fail: err => {
+        console.error('[云函数] [login] 调用失败', err)
+        wx.navigateTo({
+          url: '../deployFunctions/deployFunctions',
+        })
+      }
+    })
+
   },
   calshow: function(e) {
     wx.navigateTo({
@@ -85,10 +125,106 @@ Page({
       activity: e.detail.value
     })
   },
+  //查询数据库有没有这个用户
+  onQuery: function () {
+   
+    const db = wx.cloud.database()
+    
+    // 查询当前用户所有的 counters
+    db.collection('users').where({
+      _openid: this.data.openid
+    }).get({
+      success: res => {
+
+        if (res.data[0] == null){
+          this.setData({
+            queryResult: 'false'
+          })
+        }else{
+          this.setData({
+            queryResult: 'true'
+          })
+        }
+        
+        console.log(this.data.queryResult);
+        console.log('[数据库] [查询记录] 成功: '+this.data.openid)
+     
+      },
+      fail: err => {
+        this.setData({
+          queryResult: 'false'
+        })
+        wx.showToast({
+          icon: 'none',
+          title: '查询记录失败'
+        })
+       
+        console.error('[数据库] [查询记录] 失败：', err)
+      }
+    })
+  },
   //新增到数据库
   onAdd: function() {
+
+     if(this.data.queryResult==='true'){
+       if (this.verifyquestion()){
+      this.calculate()
+      console.log(this.data.calculate)
+      wx.cloud.callFunction({
+        name:'update',
+        data:{
+          _openid:this.data.openid,
+          age:this.data.age,
+          height:this.data.height,
+          weight:this.data.weight,
+          activity:this.data.activity,
+          calculate:this.data.calculate
+        },
+        success:res=>{
+          console.log('更新数据成功')
+        }
+      })
+      // const db = wx.cloud.database()
+      // console.log(this.data.openid)
+      //    db.collection('users').doc(this.data.openid).update({
+      //   data: {
+      //     age: this.data.age,
+      //     height: this.data.height,
+      //     weight: this.data.weight,
+      //     activity: this.data.activity,
+      //     // nickName: this.data.userInfo.nickName,
+      //     // gender: this.data.userInfo.gender,
+      //     // city: this.data.userInfo.city,
+      //     // province: this.data.userInfo.province,
+      //     // avatarUrl: this.data.avatarUrl,
+      //     calculate: this.data.calculate
+      //   },
+      //   success: res => {
+      //     // 在返回结果中会包含新创建的记录的 _id
+      //     // this.setData({
+      //     //   counterId: res._id
+      //     //   //count: 1
+      //     // })
+      //     console.log(this.data.calculate)
+      //     wx.showToast({
+      //       title: '修改记录成功',
+      //     })
+      //     console.log('[数据库] [修改记录] 成功，记录 _id: ', res.calculate)
+      //   },
+      //   fail: err => {
+      //     wx.showToast({
+      //       icon: 'none',
+      //       title: '修改记录失败'
+      //     })
+      //     console.error('[数据库] [修改记录] 失败：', err)
+      //   }
+      // })
+      this.calshow();
+    }
+     }else{
     if (this.verifyquestion()){
       this.calculate()
+      console.log(this.data.calculate)
       const db = wx.cloud.database()
       db.collection('users').add({
         data: {
@@ -110,23 +246,28 @@ Page({
             //count: 1
           })
           wx.showToast({
-            title: '新增记录成功',
+            title: '提交成功',
           })
           console.log('[数据库] [新增记录] 成功，记录 _id: ', res._id)
         },
         fail: err => {
           wx.showToast({
             icon: 'none',
-            title: '新增记录失败'
+            title: '提交失败'
           })
           console.error('[数据库] [新增记录] 失败：', err)
         }
       })
       this.calshow();
     }
+     }
+    
+    
+    
     
   },
   onFood:function(){
+   
     wx.navigateTo({
       url: '../foodcal/foodcal',
     })

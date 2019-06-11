@@ -9,8 +9,13 @@
     </block>
   </view>
   <view class="count-Cal">
-    <view class="personalCal" wx:if="{{cal!=''}}">{{cal}}</view>
-    <view class="personalCal" wx:else><button bindtap='questionshow'>填写问卷</button></view>
+    <view class="personalCal" wx:if="{{cal!=''}}">{{cal}}
+     <!-- <button bindtap='questionshow'>重填问卷</button> -->
+    </view> 
+   
+    <view class="personalCal" wx:else>
+      <!-- <button bindtap='questionshow'>填写问卷</button> -->
+    </view>
     <view class="personalCal-text">每日摄入热量(cal)</view>
   </view>
   <view class="choice">
@@ -31,10 +36,16 @@
       <button size='mini' plain="true" bindtap="choicePlace"  data-place="3" >附近美食</button> -->
     </view>
   </view>
+     
   <view class="whattoeat">
     <button class="whattoeat-btn" bindtap="whatsEatToday">今天吃什么?</button>
   </view>
 
+  <view class="contact">
+    <button class="contact-button" open-type='contact' session-from='weapp'>
+     <image src="{{contact}}" class='contact-icon-img'></image>
+    </button>
+  </view>
   <view class="whatstoeat-content" hidden="{{hiddencontent}}">
     <view class="breakfast">
       <view class="text">早餐：</view>
@@ -44,7 +55,7 @@
       </view>
     </view>
     <view class="breakfast">
-       <view class="text">午餐：</view>
+      <view class="text">午餐：</view>
       <view wx:for="{{lunch}}" class="foodcontent">
         <image src="../../images/foods/{{item.foodid}}.jpg" mode="aspectFill" class='img'></image>
         <view class="title">{{item.foodname}}{{item.foodNum}}</view>
@@ -58,7 +69,7 @@
       </view>
     </view>
     <view class="breakfast">
-       <view class="text">加餐：</view>
+      <view class="text">加餐：</view>
       <view wx:for="{{addmeal}}" class="foodcontent">
         <image src="../../images/foods/{{item.foodid}}.jpg" mode="aspectFill" class='img'></image>
         <view class="title">{{item.foodname}}{{item.foodNum}}</view>
@@ -78,12 +89,23 @@
       </view>
 
     </view>
-    <view class="givemoney" bindtap='givemoney'><button class="givemoney-btn">给开发者赞赏</button></view>
-
+    <text class='shareText'>生成海报分享至</text>
+    <view class='imgBox'>
+      <button open-type="share" class='zfbtn'>
+        <image src="{{wechat}}" class='img'></image>
+      </button>
+      <button class='zfbtn m_l' bindtap='formSubmit'>
+        <image src="{{quan}}" class='img'></image>
+      </button>
+    </view>
+    <view class="givemoney" bindtap='givemoney'>
+      <button class="givemoney-btn">给开发者赞赏</button>
+    </view>
+    <ad unit-id="adunit-14ae4cbec56b0028"></ad>
 
   </view>
 
-<!-- <view class="mapview"  hidden="{{hiddenmap}}">
+  <!-- <view class="mapview"  hidden="{{hiddenmap}}">
 <view class="map_container"> 
   <map class="map" id="map" longitude="{{longitude}}" latitude="{{latitude}}" scale="14" show-location="true" markers="{{markers}}" bindmarkertap="makertap"></map> 
 </view> 
@@ -95,4 +117,12 @@
 <view class="dianping"></view>
 <view class="givemoney" bindtap='givemoney'><button class="givemoney-btn" style="width:40%;">给开发者赞赏</button></view>
 </view> -->
+<view class='imagePathBox' hidden="{{maskHidden == false}}">
+      <image src="{{imagePath}}" class='shengcheng'></image>
+      <button class='baocun' bindtap='baocun'>保存相册，分享给朋友</button>
+    </view>
+   <view hidden="{{maskHidden == false}}" class="mask"></view> 
+  <view class="canvas-box">
+      <canvas  style="width: 375px;height: 667px;position:fixed;top:9999px" canvas-id="mycanvas"/>
+  </view>  
 </view>

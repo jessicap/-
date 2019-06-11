@@ -18,8 +18,12 @@
   <view class="count-Cal">
     <button class="countCal" bindgetuserinfo='questionshow' open-type='getUserInfo'>计算每日所需卡路里</button>
   </view>
+  
  <view class="footer">
-    <text class="footermotto">Bon Appetitt!</text>
+    <text class="footermotto">Bon Appetitt!
+    </text>
+   <view> <ad unit-id="adunit-14ae4cbec56b0028" class="ad-footer"></ad></view>
+  
   </view>
 
   

@@ -8,7 +8,9 @@
     "pages/deployFunctions/deployFunctions",
     "pages/chooseLib/chooseLib",
     "pages/question/question",
-    "pages/foodcal/foodcal"
+    "pages/foodcal/foodcal",
+    "pages/poster/poster"
+    
   ],
   "permission": {
     "scope.userLocation": {
