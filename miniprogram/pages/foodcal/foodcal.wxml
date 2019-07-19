@@ -9,12 +9,12 @@
     </block>
   </view>
   <view class="count-Cal">
-    <view class="personalCal" wx:if="{{cal!=''}}">{{cal}}
-     <!-- <button bindtap='questionshow'>重填问卷</button> -->
+    <view class="personalCal" wx:if="{{cal!=''}}">{{cal}}<text class="cal-word">(cal)</text>
+    <view><button bindtap='questionshow' class="re-question" size='mini'  >重填问卷</button> </view>
     </view> 
    
     <view class="personalCal" wx:else>
-      <!-- <button bindtap='questionshow'>填写问卷</button> -->
+    <view><button bindtap='questionshow' size='mini'  >填写问卷</button> </view>
     </view>
     <view class="personalCal-text">每日摄入热量(cal)</view>
   </view>

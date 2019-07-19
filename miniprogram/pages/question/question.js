@@ -170,10 +170,10 @@ Page({
        if (this.verifyquestion()){
       this.calculate()
       console.log(this.data.calculate)
+   
       wx.cloud.callFunction({
         name:'update',
         data:{
-          _openid:this.data.openid,
           age:this.data.age,
           height:this.data.height,
           weight:this.data.weight,
@@ -181,6 +181,8 @@ Page({
           calculate:this.data.calculate
         },
         success:res=>{
+          console.log('[云函数] [update] user openid: ', res.result)
+          console.log('[云函数] [update] user appid: ', res.result.appid)
           console.log('更新数据成功')
         }
       })

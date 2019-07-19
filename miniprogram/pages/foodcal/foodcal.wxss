@@ -94,8 +94,10 @@
   border: 0
 }
 .foodcontent .img{
-  width: 30px;
-  height:30px;
+  width: 60px;
+  height:60px;
+  border-radius: 5px;
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
 }
 .foodcontent .title{
   width:60px;
@@ -113,7 +115,7 @@ height:60px;
 line-height:60px;
 }
 .foodcontent{
-  margin:6px;
+  margin:6px 10px;
 }
 .totalcal{
   font-size: 14px;
@@ -324,4 +326,13 @@ button[class="baocun"]::after{
   width: 100%;
   height: 100%;
   border-radius: 50%;
+}
+.re-question{
+  background-color:#f8f6f6;
+  border-color:#f8f6f6;
+  color:#c0c0c0;
+  
+}
+.cal-word{
+  font-size: 12px;
 }

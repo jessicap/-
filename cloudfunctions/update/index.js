@@ -11,7 +11,9 @@ exports.main = async (event, context) => {
   const wxContext = cloud.getWXContext()
   console.log(wxContext.OPENID)
   try{
-    return await db.collection('users').doc(wxContext.OPENID).update({
+    return await db.collection('users').where({
+      _openid: wxContext.OPENID,
+    }).update({
       data:{
         age: event.age,
         height: event.height,
@@ -25,7 +27,6 @@ exports.main = async (event, context) => {
   }
 
 
- 
 
   return {
     event,
