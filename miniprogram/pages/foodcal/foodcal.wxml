@@ -9,12 +9,17 @@
     </block>
   </view>
   <view class="count-Cal">
-    <view class="personalCal" wx:if="{{cal!=''}}">{{cal}}<text class="cal-word">(cal)</text>
-    <view><button bindtap='questionshow' class="re-question" size='mini'  >重填问卷</button> </view>
-    </view> 
-   
+    <view class="personalCal" wx:if="{{cal!=''}}">{{cal}}
+      <text class="cal-word">(cal)</text>
+      <view>
+        <button bindtap='questionshow' class="re-question" size='mini'>重填问卷</button>
+      </view>
+    </view>
+
     <view class="personalCal" wx:else>
-    <view><button bindtap='questionshow' size='mini'  >填写问卷</button> </view>
+      <view>
+        <button bindtap='questionshow' size='mini'>填写问卷</button>
+      </view>
     </view>
     <view class="personalCal-text">每日摄入热量(cal)</view>
   </view>
@@ -36,14 +41,14 @@
       <button size='mini' plain="true" bindtap="choicePlace"  data-place="3" >附近美食</button> -->
     </view>
   </view>
-     
+
   <view class="whattoeat">
     <button class="whattoeat-btn" bindtap="whatsEatToday">今天吃什么?</button>
   </view>
 
   <view class="contact">
     <button class="contact-button" open-type='contact' session-from='weapp'>
-     <image src="{{contact}}" class='contact-icon-img'></image>
+      <image src="{{contact}}" class='contact-icon-img'></image>
     </button>
   </view>
   <view class="whatstoeat-content" hidden="{{hiddencontent}}">
@@ -82,8 +87,19 @@
         <view wx:if="{{cal!=''&& breakfastCal+lunchCal+dinnerCal+addmealCal-cal>200}}">吃多了，{{sports[0].name}}</view>
         <view wx:elif="{{cal!=''&& breakfastCal+lunchCal+dinnerCal+addmealCal-cal>150}}">吃多了，{{sports[1].name}}</view>
         <view wx:elif="{{cal!=''&& breakfastCal+lunchCal+dinnerCal+addmealCal-cal>100}}">吃多了，{{sports[2].name}}</view>
-        <view wx:elif="{{cal!=''&& breakfastCal+lunchCal+dinnerCal+addmealCal-cal>0}}">吃多了，{{sports[3].name}}</view>
-        <view wx:elif="{{ cal!=''&&breakfastCal+lunchCal+dinnerCal+addmealCal-cal<-100}}">今天可以多吃一点</view>
+        <view wx:elif="{{cal!=''&& breakfastCal+lunchCal+dinnerCal+addmealCal-cal>0}}">
+          吃多了，{{sports[3].name}}</view>
+        <view wx:elif="{{ cal!=''&&breakfastCal+lunchCal+dinnerCal+addmealCal-cal<-100}}">
+            <view class="nightsnack">
+           <image class="bgImg" src="/images/yexiao.png"></image>
+            <view wx:for="{{nightsnack}}" class="foodcontent">
+             <view class="text">夜宵</view>
+              <image src="../../images/foods/{{item.foodid}}.jpg" mode="aspectFill" class='img'></image>
+              <view class="title">{{item.foodname}}</view>
+            </view>
+         
+          </view>
+          今天没吃饱，犒劳自己一下吧~</view>
         <view wx:elif="{{cal===''}}">请填写问卷获得运动小贴士！</view>
         <view wx:else>今天吃的差不多了</view>
       </view>
@@ -117,12 +133,12 @@
 <view class="dianping"></view>
 <view class="givemoney" bindtap='givemoney'><button class="givemoney-btn" style="width:40%;">给开发者赞赏</button></view>
 </view> -->
-<view class='imagePathBox' hidden="{{maskHidden == false}}">
-      <image src="{{imagePath}}" class='shengcheng'></image>
-      <button class='baocun' bindtap='baocun'>保存相册，分享给朋友</button>
-    </view>
-   <view hidden="{{maskHidden == false}}" class="mask"></view> 
+  <view class='imagePathBox' hidden="{{maskHidden == false}}">
+    <image src="{{imagePath}}" class='shengcheng'></image>
+    <button class='baocun' bindtap='baocun'>保存相册，分享给朋友</button>
+  </view>
+  <view hidden="{{maskHidden == false}}" class="mask"></view>
   <view class="canvas-box">
-      <canvas  style="width: 375px;height: 667px;position:fixed;top:9999px" canvas-id="mycanvas"/>
-  </view>  
+    <canvas style="width: 375px;height: 667px;position:fixed;top:9999px" canvas-id="mycanvas" />
+  </view>
 </view>

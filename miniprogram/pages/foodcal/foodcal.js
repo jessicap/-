@@ -92,6 +92,7 @@ Page({
     lunch: [],
     dinner: [],
     addmeal: [],
+    nightsnack:[],
     breakfastCal:'',
     lunchCal:'',
     dinnerCal:'',
@@ -558,6 +559,7 @@ Page({
     if (interstitialAd) {
       interstitialAd.show().catch((err) => {
         console.error(err)
+        interstitialAd=false;
       })
     }
     var that = this
@@ -610,14 +612,18 @@ Page({
       this.onQueryTodayLunch();
       this.onQueryTodayDinner();
       this.onQueryTodayAddmeal();
+      this.onQueryTodayNightsnack();
      // this.caltotal(this.data.breakfastCal);
       console.log("点击按钮"+this.data.breakfastCal);
       // if (this.data.breakfastCal != '' && this.data.lunchCal != '' && this.data.dinnerCal != '' && this.data.addmealCal!=''){
+
         this.setData({
           hiddencontent: false,
           hiddenmap: true
         })
       // }
+
+    
      
     } 
     //如果选择便利店
@@ -626,6 +632,7 @@ Page({
       this.onQueryTodayLunchStore();
       this.onQueryTodayDinnerStore();
       this.onQueryTodayAddmealStore();
+      this.onQueryTodayNightsnack();
       this.setData({
         hiddencontent: false,
         hiddenmap: true
@@ -1059,6 +1066,60 @@ Page({
         this.setData({
           addmeal: arr,
           addmealCal: addmealCal
+        })
+        console.log(arr);
+        console.log('[数据库] [查询记录] 成功: ', res)
+      },
+      fail: err => {
+        wx.showToast({
+          icon: 'none',
+          title: '查询记录失败'
+        })
+        console.error('[数据库] [查询记录] 失败：', err)
+      }
+    })
+
+  },
+  //查询这个人今日夜宵
+  onQueryTodayNightsnack: function () {
+    var max, max1
+    var random1, random2, random3
+    var arr = new Array();
+    var randomarr = new Array();
+   // var nightsnackCal
+    const db = wx.cloud.database()
+    const _ = db.command
+    // 查询当前用户所有的 users
+    db.collection('foods').where({
+      foodType: '夜宵'
+    }).get({
+      success: res => {
+        // this.setData({
+        //   cal: res.data[0].calculaste
+        // })
+        max = res.data.length;
+        console.log(this.createRandom(this.randomArr(max), 1))
+        randomarr = this.createRandom(this.randomArr(max), 1)
+        random1 = randomarr[0];
+       
+
+
+
+        var obj1 = new Object();
+
+        obj1.foodid = res.data[random1].foodId
+        obj1.foodname = res.data[random1].foodName
+        obj1.foodNum = res.data[random1].foodNum
+        obj1.foodCal = res.data[random1].foodCal
+     
+        arr.push(obj1)
+        
+       // addmealCal = obj1.foodCal + obj2.foodCal
+        //  return arr
+
+        this.setData({
+          nightsnack: arr,
+         // addmealCal: addmealCal
         })
         console.log(arr);
         console.log('[数据库] [查询记录] 成功: ', res)
